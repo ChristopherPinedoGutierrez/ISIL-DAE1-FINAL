@@ -58,7 +58,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title fw-semibold mb-3">Generar Llaves</h5>
                         <p class="card-text text-muted">Organiza automáticamente las rondas del torneo.</p>
-                        <a href="llaves" class="btn btn-danger btn-custom w-100">Generar Llaves</a>
+                        <a href="llave" class="btn btn-danger btn-custom w-100">Generar Llaves</a>
                     </div>
                 </div>
             </div>
