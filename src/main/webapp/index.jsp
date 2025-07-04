@@ -31,34 +31,41 @@
             <h1 class="fw-bold text-primary">Gestión Torneo Nacional de Karate</h1>
             <p class="text-muted fs-5">Administra academias, registra karatecas y organiza el torneo fácilmente.</p>
         </div>
-
+        
         <div class="row justify-content-center g-4">
             <div class="col-md-4">
-                <div class="card card-hover shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-semibold mb-3">Registrar Academias</h5>
-                        <p class="card-text text-muted">Añade nuevas academias al sistema y gestiona sus datos.</p>
-                        <a href="academia" class="btn btn-primary btn-custom w-100">Ir a Academias</a>
+                <div class="card card-hover shadow-sm border-0 h-100">
+                    <div class="card-body d-flex flex-column justify-content-between text-center h-100">
+                        <!-- Agrupa h5 y p en un div -->
+                        <div>
+                            <h5 class="card-title fw-semibold mb-3">Registrar Academias</h5>
+                            <p class="card-text text-muted">Añade nuevas academias al sistema y gestiona sus datos.</p>
+                        </div>
+                        <a href="academia" class="btn btn-primary btn-custom w-100 mt-3">Ir a Academias</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card card-hover shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-semibold mb-3">Registrar Karatecas</h5>
-                        <p class="card-text text-muted">Registra competidores con todos sus datos personales.</p>
-                        <a href="karateca" class="btn btn-success btn-custom w-100">Ir a Karatecas</a>
+                <div class="card card-hover shadow-sm border-0 h-100">
+                    <div class="card-body d-flex flex-column justify-content-between text-center h-100">
+                        <div>
+                            <h5 class="card-title fw-semibold mb-3">Registrar Karatecas</h5>
+                            <p class="card-text text-muted">Registra competidores con todos sus datos personales.</p>
+                        </div>
+                        <a href="karateca" class="btn btn-success btn-custom w-100 mt-3">Ir a Karatecas</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card card-hover shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-semibold mb-3">Generar Llaves</h5>
-                        <p class="card-text text-muted">Organiza automáticamente las rondas del torneo.</p>
-                        <a href="llave" class="btn btn-danger btn-custom w-100">Generar Llaves</a>
+                <div class="card card-hover shadow-sm border-0 h-100">
+                    <div class="card-body d-flex flex-column justify-content-between text-center h-100">
+                        <div>
+                            <h5 class="card-title fw-semibold mb-3">Generar Llaves</h5>
+                            <p class="card-text text-muted">Organiza automáticamente las rondas del torneo.</p>
+                        </div>
+                        <a href="llave" class="btn btn-danger btn-custom w-100 mt-3">Generar Llaves</a>
                     </div>
                 </div>
             </div>
