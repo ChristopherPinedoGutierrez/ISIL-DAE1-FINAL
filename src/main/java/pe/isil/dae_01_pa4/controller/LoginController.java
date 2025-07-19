@@ -58,13 +58,25 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
         HttpSession session = request.getSession(false);
+
+        if ("logout".equals(action)) {
+            if (session != null) {
+                session.invalidate();
+            }
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
         if (session != null && session.getAttribute("usuario") != null) {
             response.sendRedirect("index.jsp");
             return;
         }
-        // Muestra el formulario de login en pages/login.jsp
+        // Muestra el formulario de login
         request.getRequestDispatcher("pages/login.jsp").forward(request, response);
+    
     }
 
     /**
@@ -100,7 +112,7 @@ public class LoginController extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Controlador de login/logout";
     }// </editor-fold>
 
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import pe.isil.dae_01_pa4.business_logic.BL_Academia;
 import pe.isil.dae_01_pa4.model.beans.Academia;
 
-@WebServlet(name = "AcademiaController", urlPatterns = {"/academias"})
+@WebServlet(name = "AcademiaController", urlPatterns = {"/academia"})
 public class AcademiaController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

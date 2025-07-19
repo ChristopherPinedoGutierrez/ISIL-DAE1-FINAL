@@ -14,7 +14,7 @@ import pe.isil.dae_01_pa4.business_logic.BL_Llave;
 import pe.isil.dae_01_pa4.model.beans.Llave;
 import pe.isil.dae_01_pa4.model.beans.Karateca;
 
-@WebServlet(name = "LlaveController", urlPatterns = {"/llaves"})
+@WebServlet(name = "LlaveController", urlPatterns = {"/llave"})
 public class LlaveController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

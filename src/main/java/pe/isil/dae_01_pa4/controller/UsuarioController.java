@@ -13,7 +13,7 @@ import pe.isil.dae_01_pa4.business_logic.BL_Usuario;
 import pe.isil.dae_01_pa4.model.beans.Usuario;
 import pe.isil.dae_01_pa4.util.PasswordUtils;
 
-@WebServlet(name = "UsuarioController", urlPatterns = {"/Usuarios"})
+@WebServlet(name = "UsuarioController", urlPatterns = {"/Usuario"})
 public class UsuarioController extends HttpServlet {
 
     /**
@@ -72,8 +72,19 @@ public class UsuarioController extends HttpServlet {
                 break;
             case "delete":
                 int idDelete = Integer.parseInt(request.getParameter("id"));
-                bl_usuario.delete(idDelete);
-                response.sendRedirect("usuarios");
+                boolean okDelete = bl_usuario.delete(idDelete);
+                String mensaje = okDelete ? "Usuario eliminado correctamente."
+                                          : "No se pudo eliminar el usuario.";
+                String tipoMensaje = okDelete ? "success" : "danger";
+                List<Usuario> usuariosAfterDelete = bl_usuario.getAll();
+                request.setAttribute("usuarios", usuariosAfterDelete);
+                request.setAttribute("mensaje", mensaje);
+                request.setAttribute("tipoMensaje", tipoMensaje);
+                request.getRequestDispatcher("pages/usuarios.jsp").forward(request, response);
+                break;
+                case "register":
+                // Muestra el formulario público de registro
+                request.getRequestDispatcher("pages/register.jsp").forward(request, response);
                 break;
             case "list":
             default:
@@ -95,36 +106,110 @@ public class UsuarioController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Captura datos del formulario
-        String idStr = request.getParameter("id");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String nombre = request.getParameter("nombre");
-        String rol = request.getParameter("rol");
-        String dni = request.getParameter("dni");
+        String action = request.getParameter("action");
+        if ("save".equals(action)) {
+            String idStr = request.getParameter("idUsuario");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String rol = request.getParameter("rol");
+            String dni = request.getParameter("dni");
 
-        Usuario usuario = new Usuario();
-        usuario.setUsername(username);
-        usuario.setNombre(nombre);
-        usuario.setRol(rol);
-        usuario.setDni(dni);
+            Usuario usuario = new Usuario();
+            usuario.setUsername(username);
+            usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setRol(rol);
+            usuario.setDni(dni);
 
-        // Si se ingresa contraseña, se encripta
-        if (password != null && !password.trim().isEmpty()) {
-            usuario.setPassword(PasswordUtils.hash(password));
-        }
+            String mensaje, tipoMensaje;
+            if (idStr == null || idStr.isEmpty()) {
+                // Crear nuevo usuario (gestión interna)
+                if (password != null && !password.trim().isEmpty()) {
+                    usuario.setPassword(PasswordUtils.hash(password));
+                } else {
+                    usuario.setPassword(null); // O lanza error si es obligatorio
+                }
+                boolean ok = bl_usuario.add(usuario);
+                mensaje = ok ? "Usuario creado correctamente." : "Hubo un error al crear el usuario.";
+                tipoMensaje = ok ? "success" : "danger";
+                if (ok) {
+                    List<Usuario> usuarios = bl_usuario.getAll();
+                    request.setAttribute("usuarios", usuarios);
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("tipoMensaje", tipoMensaje);
+                    request.getRequestDispatcher("pages/usuarios.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("tipoMensaje", tipoMensaje);
+                    request.getRequestDispatcher("pages/usuario_form.jsp").forward(request, response);
+                }
+            } else {
+                // Editar usuario existente (gestión interna)
+                usuario.setIdUsuario(Integer.parseInt(idStr));
+                if (password != null && !password.trim().isEmpty()) {
+                    usuario.setPassword(PasswordUtils.hash(password));
+                } else {
+                    // Mantén la contraseña anterior
+                    Usuario usuarioBD = bl_usuario.getById(usuario.getIdUsuario());
+                    usuario.setPassword(usuarioBD.getPassword());
+                }
+                boolean ok = bl_usuario.update(usuario);
+                mensaje = ok ? "Usuario actualizado correctamente." : "Hubo un error al actualizar el usuario.";
+                tipoMensaje = ok ? "success" : "danger";
+                if (ok) {
+                    List<Usuario> usuarios = bl_usuario.getAll();
+                    request.setAttribute("usuarios", usuarios);
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("tipoMensaje", tipoMensaje);
+                    request.getRequestDispatcher("pages/usuarios.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("tipoMensaje", tipoMensaje);
+                    request.setAttribute("usuario", usuario);
+                    request.getRequestDispatcher("pages/usuario_form.jsp").forward(request, response);
+                }
+            }
+        } else if ("register".equals(action)) {
+            // Registro público de usuario
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String rol = "usuario"; // Puedes ajustar el rol por defecto
+            String dni = request.getParameter("dni");
 
-        boolean ok;
-        if (idStr == null || idStr.isEmpty()) {
-            // Nuevo usuario
-            ok = bl_usuario.add(usuario);
+            Usuario usuario = new Usuario();
+            usuario.setUsername(username);
+            usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setRol(rol);
+            usuario.setDni(dni);
+
+            if (password != null && !password.trim().isEmpty()) {
+                usuario.setPassword(PasswordUtils.hash(password));
+            }
+
+            if (bl_usuario.getByUsername(username) != null) {
+                request.setAttribute("mensaje", "El usuario ya existe");
+                request.setAttribute("tipoMensaje", "danger");
+                request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+            } else {
+                boolean ok = bl_usuario.add(usuario);
+                if (ok) {
+                    request.setAttribute("mensaje", "Usuario registrado correctamente. Puedes ingresar.");
+                    request.setAttribute("tipoMensaje", "success");
+                    request.getRequestDispatcher("pages/login.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("mensaje", "Hubo un error al registrar el usuario.");
+                    request.setAttribute("tipoMensaje", "danger");
+                    request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+                }
+            }
         } else {
-            // Editar usuario existente
-            usuario.setIdUsuario(Integer.parseInt(idStr));
-            ok = bl_usuario.update(usuario);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción POST desconocida.");
         }
-
-        response.sendRedirect("usuarios");
     }
 
     /**

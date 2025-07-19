@@ -14,7 +14,7 @@ import pe.isil.dae_01_pa4.business_logic.BL_Karateca;
 import pe.isil.dae_01_pa4.model.beans.Academia;
 import pe.isil.dae_01_pa4.model.beans.Karateca;
 
-@WebServlet(name = "KaratecaController", urlPatterns = {"/karatecas"})
+@WebServlet(name = "KaratecaController", urlPatterns = {"/karateca"})
 public class KaratecaController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

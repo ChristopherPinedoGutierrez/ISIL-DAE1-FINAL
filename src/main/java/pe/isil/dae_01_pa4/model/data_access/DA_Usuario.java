@@ -141,7 +141,7 @@ public class DA_Usuario {
                 pst.setString(2, usuario.getApellido());
                 pst.setString(3, usuario.getDni());
                 pst.setString(4, usuario.getUsername());
-                pst.setString(5, usuario.getPassword()); // encriptada!
+                pst.setString(5, usuario.getPassword());
                 pst.setString(6, usuario.getRol());
 
                 if (pst.executeUpdate() > 0) {
