@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .table thead th {
-            background-color: #212529;
+            background-color: #0d6efd; /* azul Bootstrap */
             color: #fff;
             text-align: center;
             vertical-align: middle;
@@ -88,7 +88,7 @@
 
     <div class="table-responsive rounded-4 shadow-sm">
         <table class="table table-bordered table-hover align-middle mb-0" id="tablaAcademias">
-            <thead class="table-dark text-center">
+            <thead>
             <tr>
                 <th style="width: 40px; text-align: center;"></th>
                 <th>ID</th>

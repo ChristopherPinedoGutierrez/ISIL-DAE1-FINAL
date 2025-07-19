@@ -10,7 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            /* Fondo escala de grises */
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 50%, #bdbdbd 100%);
             min-height: 100vh;
         }
         .card-hover:hover {
@@ -18,12 +19,28 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
         }
-        .btn-custom {
+        /* Pills style for main buttons */
+        .btn-pill {
+            border-radius: 2rem !important;
             font-size: 1.05rem;
-            padding: 8px 14px;
+            padding: 10px 24px;
+            font-weight: 500;
+        }
+        .btn-pill:disabled {
+            opacity: 0.65;
         }
         .navbar .navbar-nav .nav-item {
             margin-left: 10px;
+        }
+        /* Increase card rounding */
+        .card {
+            border-radius: 2rem !important;
+        }
+        .titulo-negro {
+            color: #212529 !important;
+        }
+        .navbar-brand {
+            color: #212529 !important;
         }
     </style>
 </head>
@@ -36,10 +53,13 @@
     String academiaBtnDisabled, karatecaBtnDisabled, llaveBtnDisabled;
     String academiaTooltip, karatecaTooltip, llaveTooltip;
 
+    // Variable para la animación de la card
+    String cardAnimClass = (usuario != null) ? "card-hover" : "";
+
     if (usuario == null) {
-        academiaBtnClass = "btn btn-secondary btn-custom w-100 mt-3";
-        karatecaBtnClass = "btn btn-secondary btn-custom w-100 mt-3";
-        llaveBtnClass = "btn btn-secondary btn-custom w-100 mt-3";
+        academiaBtnClass = "btn btn-secondary btn-pill w-100 mt-3";
+        karatecaBtnClass = "btn btn-secondary btn-pill w-100 mt-3";
+        llaveBtnClass = "btn btn-secondary btn-pill w-100 mt-3";
         academiaBtnDisabled = "disabled";
         karatecaBtnDisabled = "disabled";
         llaveBtnDisabled = "disabled";
@@ -47,9 +67,9 @@
         karatecaTooltip = "title='Debes iniciar sesión' data-bs-toggle='tooltip' data-bs-placement='bottom'";
         llaveTooltip = "title='Debes iniciar sesión' data-bs-toggle='tooltip' data-bs-placement='bottom'";
     } else {
-        academiaBtnClass = "btn btn-primary btn-custom w-100 mt-3";
-        karatecaBtnClass = "btn btn-success btn-custom w-100 mt-3";
-        llaveBtnClass = "btn btn-danger btn-custom w-100 mt-3";
+        academiaBtnClass = "btn btn-primary btn-pill w-100 mt-3";
+        karatecaBtnClass = "btn btn-success btn-pill w-100 mt-3";
+        llaveBtnClass = "btn btn-danger btn-pill w-100 mt-3";
         academiaBtnDisabled = "";
         karatecaBtnDisabled = "";
         llaveBtnDisabled = "";
@@ -62,7 +82,7 @@
 <!-- Navbar dinámica -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm position-fixed w-100" style="top:0;left:0;z-index:1050;">
     <div class="container">
-        <a class="navbar-brand text-primary fw-bold" href="index.jsp">DAE 1 - Proyecto Final</a>
+        <a class="navbar-brand fw-bold" href="index.jsp">DAE 1 - Proyecto Final</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -70,23 +90,23 @@
             <ul class="navbar-nav align-items-center">
                 <% if (usuario != null) { %>
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary btn-sm btn-custom" href="usuario?action=list">
+                        <a class="btn btn-outline-primary btn-sm btn-pill" href="usuario?action=list">
                             <i class="bi bi-people"></i> Gestionar Usuarios
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-danger btn-sm btn-custom" href="login?action=logout">
+                        <a class="btn btn-outline-danger btn-sm btn-pill" href="login?action=logout">
                             <i class="bi bi-box-arrow-right"></i> Cerrar sesión
                         </a>
                     </li>
                 <% } else { %>
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary btn-sm btn-custom" href="usuario?action=register">
+                        <a class="btn btn-outline-primary btn-sm btn-pill" href="usuario?action=register">
                             <i class="bi bi-person-plus"></i> Registrar
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-success btn-sm btn-custom" href="login">
+                        <a class="btn btn-outline-success btn-sm btn-pill" href="login">
                             <i class="bi bi-box-arrow-in-right"></i> Ingresar
                         </a>
                     </li>
@@ -116,25 +136,25 @@
 
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="fw-bold text-primary">Gestión Torneo Nacional de Karate</h1>
+        <h1 class="fw-bold titulo-negro">Gestión Torneo Nacional de Karate</h1>
         <p class="text-muted fs-5">Administra academias, registra karatecas y organiza el torneo fácilmente.</p>
     </div>
     
     <div class="row justify-content-center g-4">
         <div class="col-md-4">
-            <div class="card card-hover shadow-sm border-0 h-100">
+            <div class="card <%= cardAnimClass %> shadow-sm border-0 h-100">
                 <div class="card-body d-flex flex-column justify-content-between text-center h-100">
                     <div>
                         <h5 class="card-title fw-semibold mb-3">Registrar Academias</h5>
                         <p class="card-text text-muted">Añade nuevas academias al sistema y gestiona sus datos.</p>
                     </div>
                     <% if (usuario == null) { %>
-                        <button class="btn btn-secondary btn-custom w-100 mt-3" disabled
+                        <button class="btn btn-secondary btn-pill w-100 mt-3" disabled
                             title="Debes iniciar sesión" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             Ir a Academias
                         </button>
                     <% } else { %>
-                    <a href="academia?action=listar" class="btn btn-primary btn-custom w-100 mt-3">
+                        <a href="academia?action=listar" class="btn btn-primary btn-pill w-100 mt-3">
                             Ir a Academias
                         </a>
                     <% } %>
@@ -143,19 +163,19 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card card-hover shadow-sm border-0 h-100">
+            <div class="card <%= cardAnimClass %> shadow-sm border-0 h-100">
                 <div class="card-body d-flex flex-column justify-content-between text-center h-100">
                     <div>
                         <h5 class="card-title fw-semibold mb-3">Registrar Karatecas</h5>
                         <p class="card-text text-muted">Registra competidores con todos sus datos personales.</p>
                     </div>
                     <% if (usuario == null) { %>
-                        <button class="btn btn-secondary btn-custom w-100 mt-3" disabled
+                        <button class="btn btn-secondary btn-pill w-100 mt-3" disabled
                             title="Debes iniciar sesión" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             Ir a Karatecas
                         </button>
                     <% } else { %>
-                        <a href="karateca" class="btn btn-success btn-custom w-100 mt-3">
+                        <a href="karateca" class="btn btn-success btn-pill w-100 mt-3">
                             Ir a Karatecas
                         </a>
                     <% } %>
@@ -164,19 +184,19 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card card-hover shadow-sm border-0 h-100">
+            <div class="card <%= cardAnimClass %> shadow-sm border-0 h-100">
                 <div class="card-body d-flex flex-column justify-content-between text-center h-100">
                     <div>
                         <h5 class="card-title fw-semibold mb-3">Generar Llaves</h5>
                         <p class="card-text text-muted">Organiza automáticamente las rondas del torneo.</p>
                     </div>
                     <% if (usuario == null) { %>
-                        <button class="btn btn-secondary btn-custom w-100 mt-3" disabled
+                        <button class="btn btn-secondary btn-pill w-100 mt-3" disabled
                             title="Debes iniciar sesión" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             Generar Llaves
                         </button>
                     <% } else { %>
-                        <a href="llave" class="btn btn-danger btn-custom w-100 mt-3">
+                        <a href="llave" class="btn btn-danger btn-pill w-100 mt-3">
                             Generar Llaves
                         </a>
                     <% } %>

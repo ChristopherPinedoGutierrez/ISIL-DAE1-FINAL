@@ -4,46 +4,57 @@ Este proyecto es una aplicación web desarrollada en Java para la gestión y gen
 
 ## Tecnologías Utilizadas
 
-- **Java EE (Servlets y JSP):** Lógica de negocio y presentación web.
-- **JSP (JavaServer Pages):** Generación dinámica de páginas HTML.
+- **Java EE (Servlets y JSP):** Implementa la lógica de negocio y la presentación web.
+- **JSP (JavaServer Pages):** Generación dinámica de páginas HTML para vistas y formularios.
 - **Servlets:** Controladores para la gestión de solicitudes HTTP y flujo de la aplicación.
-- **JDBC:** Acceso y manipulación de datos en la base de datos relacional.
-- **Bootstrap 5:** Estilos y componentes responsivos para la interfaz de usuario.
-- **MVC (Modelo-Vista-Controlador):** Separación de la lógica de negocio, presentación y acceso a datos.
-- **DAO (Data Access Object):** Patrón para el acceso a datos de entidades como Karateca, Llave y Academia.
+- **JDBC:** Acceso y manipulación de datos en la base de datos relacional (MySQL u otra compatible).
+- **Bootstrap 5:** Componentes responsivos para la interfaz de usuario.
+- **MVC (Modelo-Vista-Controlador):** Separación de lógica, presentación y acceso a datos.
+- **DAO (Data Access Object):** Patrón para la gestión de entidades persistentes.
+- **Beans Java:** Clases modelo para transportar datos (`Karateca`, `Llave`, `Academia`).
 
 ## Funcionalidades Principales
 
-- **Registro y consulta de Karatecas:** Almacenamiento y listado de participantes con sus datos personales y deportivos.
-- **Ordenamiento de Karatecas:** Los participantes se ordenan secuencialmente por edad, peso y rango para una distribución justa en las llaves.
-- **Generación automática de Llaves:** Creación de las rondas del torneo, emparejando karatecas y avanzando ganadores automáticamente.
-- **Visualización de rondas y campeón:** Tablas detalladas de los enfrentamientos generados y presentación del campeón tras finalizar el torneo.
-- **Interfaz amigable:** Uso de tablas, alertas y botones estilizados con Bootstrap para facilitar la interacción.
+- **Registro y consulta de Karatecas:** Almacenamiento y listado de participantes con sus datos personales y deportivos.  
+  Formulario de registro y edición, listado y eliminación.
+- **Gestión de Academias:** Alta, edición, consulta y eliminación de academias.  
+  Asociación de karatecas a academias.
+- **Autenticación de usuarios:** Registro, login y control de sesión para acceso seguro a funcionalidades.
+- **Ordenamiento de Karatecas:** Orden secuencial por edad, peso y rango antes de generar las llaves.
+- **Generación automática de Llaves:** Crea las rondas del torneo, empareja karatecas y avanza ganadores automáticamente.
+- **Visualización de rondas y campeón:** Tablas detalladas de los enfrentamientos y presentación del campeón tras finalizar el torneo.
+- **Manejo de mensajes y errores:** Alertas informativas y mensajes claros para el usuario.
 
-## Técnicas y Buenas Prácticas Aplicadas
+## Técnicas y Detalles Técnicos
 
-- **Separación de responsabilidades:** Lógica de negocio desacoplada de la vista y del acceso a datos.
-- **Uso de beans Java:** Definición de clases modelo (`Karateca`, `Llave`, `Academia`) para transportar y manipular datos.
-- **Reutilización de código en JSP:** Métodos auxiliares para mostrar información relacionada (ej: nombre de academia).
-- **Mensajes de usuario claros:** Uso de alertas Bootstrap para informar acciones exitosas o errores.
-- **Control de flujo con Servlets:** Gestión eficiente de los forwards y atributos para mantener el estado de la aplicación.
-- **Validación y manejo de errores:** Control de casos como ausencia de llaves o de campeón.
+- **Separación de responsabilidades:**  
+  Lógica de negocio desacoplada de la vista (JSP) y del acceso a datos (DAO).
+- **Control de flujo:**  
+  Uso de servlets para forwards/redirecciones y atributos de sesión/request para mantener el estado de la aplicación.
+- **Validación de datos:**  
+  Validación de formularios en backend y frontend; manejo de errores y casos límite (sin karatecas, sin llaves, etc.).
+- **Estructura de entidades:**  
+  Beans Java para entidades principales, con métodos auxiliares y constructores.
+- **Gestión de base de datos:**  
+  Acceso mediante JDBC, uso de DAOs para operaciones CRUD.
 
 ## Estructura Principal de Archivos
 
-- `/src/main/java/pe/isil/dae_01_pa4/model/beans/` — Clases modelo (Karateca, Llave, Academia).
+- `/src/main/java/pe/isil/dae_01_pa4/model/beans/` — Clases modelo (Karateca, Llave, Academia, Usuario).
 - `/src/main/java/pe/isil/dae_01_pa4/business_logic/` — Lógica de negocio y DAOs.
-- `/src/main/webapp/pages/llaves.jsp` — Vista principal de gestión de llaves.
-- `/src/main/java/pe/isil/dae_01_pa4/controller/LlaveController.java` — Controlador principal de llaves.
+- `/src/main/java/pe/isil/dae_01_pa4/controller/` — Servlets controladores por entidad (LlaveController, KaratecaController, AcademiaController, UsuarioController).
+- `/src/main/webapp/pages/` — Vistas JSP para cada funcionalidad (listados, formularios, llaves, campeón).
+- `/src/main/webapp/index.jsp` — Página principal de navegación.
 
 ## Cómo Utilizar
 
-1. **Registrar karatecas:** Utiliza la sección correspondiente para registrar nuevos participantes.
-2. **Visualizar y ordenar:** Accede a la sección de llaves para ver a los karatecas ordenados y listos para el torneo.
-3. **Generar llaves:** Haz clic en "Generar" para crear los enfrentamientos y visualizar las rondas.
-4. **Visualizar campeón:** Una vez finalizado el torneo, se mostrará el campeón en la sección correspondiente.
+1. **Registrar karatecas y academias:** Utiliza las secciones correspondientes para registrar nuevos participantes y academias.
+2. **Gestionar usuarios:** Regístrate e inicia sesión para acceder a todas las funcionalidades.
+3. **Visualizar y ordenar:** Accede a la sección de llaves para ver karatecas ordenados y listos para el torneo.
+4. **Generar llaves:** Haz clic en "Generar" para crear los emparejamientos y visualizar las rondas.
+5. **Visualizar campeón:** Al finalizar el torneo, se muestra el campeón en la sección correspondiente.
 
 ---
 
 **Desarrollado por:** Christopher Pinedo Gutiérrez  
-**ISIL - Desarrollo de Aplicaciones Empresariales**
+**ISIL - Desarrollo de Aplicaciones Empresariales 1**

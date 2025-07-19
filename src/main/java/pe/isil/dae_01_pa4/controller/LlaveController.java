@@ -1,8 +1,6 @@
-
 package pe.isil.dae_01_pa4.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -17,54 +15,30 @@ import pe.isil.dae_01_pa4.model.beans.Karateca;
 @WebServlet(name = "LlaveController", urlPatterns = {"/llave"})
 public class LlaveController extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LlaveController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LlaveController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-    
-//    BL_Academia bl_academia = new BL_Academia();
     BL_Llave bl_llave = new BL_Llave();
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
 
+        // Solo mostrar karatecas ordenados. NO mandar llaves ni campeón ni generado.
         if (action == null || action.equals("ver")) {
-            ArrayList<Llave> llaves = bl_llave.getAll();
-            request.setAttribute("llaves", llaves);
-            
-            // NUEVO: obtener karatecas ordenados y enviarlos a la JSP
             List<Karateca> karatecasOrdenados = bl_llave.getKaratecasOrdenados();
             request.setAttribute("karatecasOrdenados", karatecasOrdenados);
-            
-//            ArrayList<Academia> academias = bl_academia.getAll();
-//            request.setAttribute("academias", academias);
-            
+
+            // NO enviar llaves, campeón ni generado aquí
             request.getRequestDispatcher("pages/llaves.jsp").forward(request, response);
         } else {
             response.sendRedirect("index.jsp");
         }
-        
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
 
         if ("generar".equals(action)) {
@@ -75,6 +49,7 @@ public class LlaveController extends HttpServlet {
             if (karatecasOrdenados.size() % 2 != 0) {
                 request.setAttribute("error", "La cantidad de karatecas debe ser par para generar las llaves.");
                 request.setAttribute("karatecasOrdenados", karatecasOrdenados);
+                // Solo mostrar tabla 1
                 request.getRequestDispatcher("pages/llaves.jsp").forward(request, response);
                 return;
             }
@@ -92,52 +67,21 @@ public class LlaveController extends HttpServlet {
                 campeon = bl_llave.getKaratecaById(idCampeon);
             }
 
-//            ArrayList<Academia> academias = bl_academia.getAll();
-//            request.setAttribute("academias", academias);
+            // Solo en este flujo enviamos llaves, campeón y el flag generado=true
             request.setAttribute("llaves", llaves);
             request.setAttribute("karatecasOrdenados", karatecasOrdenados);
             request.setAttribute("campeon", campeon);
+            request.setAttribute("generado", true);
             request.setAttribute("mensaje", "Llaves generadas correctamente.");
             request.getRequestDispatcher("pages/llaves.jsp").forward(request, response);
 
         } else {
             response.sendRedirect("index.jsp");
         }
-        
     }
-    
-    // Método de agrupamiento simple por rango ±1, edad ±2 años, peso ±5 kg
-//    private List<List<Karateca>> agruparKaratecas(List<Karateca> lista) {
-//        List<List<Karateca>> grupos = new ArrayList<>();
-//        boolean[] usados = new boolean[lista.size()];
-//
-//        for (int i = 0; i < lista.size(); i++) {
-//            if (usados[i]) continue;
-//            Karateca k1 = lista.get(i);
-//            List<Karateca> grupo = new ArrayList<>();
-//            grupo.add(k1);
-//            usados[i] = true;
-//
-//            for (int j = i + 1; j < lista.size(); j++) {
-//                if (usados[j]) continue;
-//                Karateca k2 = lista.get(j);
-//                if (Math.abs(k1.getEdad() - k2.getEdad()) <= 2 &&
-//                    Math.abs(k1.getPeso() - k2.getPeso()) <= 5 &&
-//                    Math.abs(k1.getRango() - k2.getRango()) <= 1) {
-//                    grupo.add(k2);
-//                    usados[j] = true;
-//                }
-//            }
-//
-//            grupos.add(grupo);
-//        }
-//
-//        return grupos;
-//    }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "LlaveController - gestión de llaves y campeón del torneo";
+    }
 }

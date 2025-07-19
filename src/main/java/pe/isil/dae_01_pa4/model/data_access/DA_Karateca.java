@@ -1,9 +1,7 @@
-
 package pe.isil.dae_01_pa4.model.data_access;
 
 import java.sql.*;
 import java.util.ArrayList;
-
 import pe.isil.dae_01_pa4.model.beans.Karateca;
 
 public class DA_Karateca {
@@ -92,7 +90,7 @@ public class DA_Karateca {
 
     // Obtener karateca por ID
     public Karateca getById(int id) {
-        Karateca k = new Karateca();
+        Karateca k = null;
         Connection conexion = null;
 
         try {
@@ -105,6 +103,7 @@ public class DA_Karateca {
                 rst = pst.executeQuery();
 
                 if (rst.next()) {
+                    k = new Karateca();
                     k.setIdKarateca(rst.getInt("id_karateca"));
                     k.setDni(rst.getString("dni"));
                     k.setNombreCompleto(rst.getString("nombre_completo"));
@@ -115,7 +114,6 @@ public class DA_Karateca {
                     k.setModalidad(rst.getString("modalidad"));
                     k.setIdLiga(rst.getInt("id_liga"));
                 }
-
             } else {
                 System.out.println("Error en la conexión a la base de datos");
             }
@@ -128,5 +126,71 @@ public class DA_Karateca {
 
         return k;
     }
-}
 
+    // Actualizar karateca
+    public boolean update(Karateca karateca) {
+        boolean resultado = false;
+        Connection conexion = null;
+
+        try {
+            conexion = ConexionDB.getInstancia().getConexion();
+
+            if (conexion != null) {
+                String SQL = "UPDATE karateca SET dni=?, nombre_completo=?, edad=?, peso=?, sexo=?, rango=?, modalidad=?, id_liga=? WHERE id_karateca=?";
+                pst = conexion.prepareStatement(SQL);
+                pst.setString(1, karateca.getDni());
+                pst.setString(2, karateca.getNombreCompleto());
+                pst.setInt(3, karateca.getEdad());
+                pst.setDouble(4, karateca.getPeso());
+                pst.setString(5, karateca.getSexo());
+                pst.setInt(6, karateca.getRango());
+                pst.setString(7, karateca.getModalidad());
+                pst.setInt(8, karateca.getIdLiga());
+                pst.setInt(9, karateca.getIdKarateca());
+
+                if (pst.executeUpdate() > 0) {
+                    resultado = true;
+                }
+
+            } else {
+                System.out.println("Error en la conexión a la base de datos");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ConexionDB.getInstancia().close(conexion);
+        }
+
+        return resultado;
+    }
+
+    // Eliminar karateca
+    public boolean delete(int idKarateca) {
+        boolean resultado = false;
+        Connection conexion = null;
+
+        try {
+            conexion = ConexionDB.getInstancia().getConexion();
+
+            if (conexion != null) {
+                String SQL = "DELETE FROM karateca WHERE id_karateca=?";
+                pst = conexion.prepareStatement(SQL);
+                pst.setInt(1, idKarateca);
+
+                if (pst.executeUpdate() > 0) {
+                    resultado = true;
+                }
+            } else {
+                System.out.println("Error en la conexión a la base de datos");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ConexionDB.getInstancia().close(conexion);
+        }
+
+        return resultado;
+    }
+}

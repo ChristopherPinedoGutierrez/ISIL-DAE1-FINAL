@@ -31,10 +31,10 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <h2 class="text-primary fw-bold mb-4 text-center">
-                <%= esEditar ? "Editar Academia" : "Registrar Nueva Academia" %>
-            </h2>
             <form action="academia" method="post" class="form-card">
+                <h2 class="text-primary fw-bold mb-4 text-center">
+                    <%= esEditar ? "Editar Academia" : "Registrar Nueva Academia" %>
+                </h2>
                 <input type="hidden" name="action" value="<%= esEditar ? "edit" : "new" %>">
                 <% if (esEditar) { %>
                     <input type="hidden" name="id" value="<%= academia.getIdLiga() %>">
