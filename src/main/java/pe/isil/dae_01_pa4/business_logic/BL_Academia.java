@@ -15,9 +15,24 @@ public class BL_Academia {
         return da_academia.getAll();
     }
 
+    // Obtener academia por ID
+    public Academia getById(int id) {
+        return da_academia.getById(id);
+    }
+
     // Agregar academia
     public boolean add(Academia academia) {
         return da_academia.add(academia);
+    }
+
+    // Actualizar academia
+    public boolean update(Academia academia) {
+        return da_academia.update(academia);
+    }
+
+    // Eliminar academia
+    public boolean delete(int id) {
+        return da_academia.delete(id);
     }
 
     // Verificar si el RUC ya está registrado

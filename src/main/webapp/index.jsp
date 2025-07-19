@@ -70,7 +70,7 @@
             <ul class="navbar-nav align-items-center">
                 <% if (usuario != null) { %>
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary btn-sm btn-custom" href="Usuario?action=list">
+                        <a class="btn btn-outline-primary btn-sm btn-custom" href="usuario?action=list">
                             <i class="bi bi-people"></i> Gestionar Usuarios
                         </a>
                     </li>
@@ -81,7 +81,7 @@
                     </li>
                 <% } else { %>
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary btn-sm btn-custom" href="Usuario?action=register">
+                        <a class="btn btn-outline-primary btn-sm btn-custom" href="usuario?action=register">
                             <i class="bi bi-person-plus"></i> Registrar
                         </a>
                     </li>
@@ -134,7 +134,7 @@
                             Ir a Academias
                         </button>
                     <% } else { %>
-                        <a href="academia" class="btn btn-primary btn-custom w-100 mt-3">
+                    <a href="academia?action=listar" class="btn btn-primary btn-custom w-100 mt-3">
                             Ir a Academias
                         </a>
                     <% } %>

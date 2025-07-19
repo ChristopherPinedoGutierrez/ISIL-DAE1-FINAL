@@ -13,7 +13,7 @@ import pe.isil.dae_01_pa4.business_logic.BL_Usuario;
 import pe.isil.dae_01_pa4.model.beans.Usuario;
 import pe.isil.dae_01_pa4.util.PasswordUtils;
 
-@WebServlet(name = "UsuarioController", urlPatterns = {"/Usuario"})
+@WebServlet(name = "UsuarioController", urlPatterns = {"/usuario"})
 public class UsuarioController extends HttpServlet {
 
     /**

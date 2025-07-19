@@ -10,11 +10,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .table thead th {
-            background-color: #f6f9fc;
+            background-color: #212529;
+            color: #fff;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .table tbody td {
             vertical-align: middle;
         }
-        .btn-group-crud {
-            margin-bottom: 18px;
+        .table-responsive {
+            border-radius: 1rem;
+            box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.05);
         }
         .crud-toolbar {
             display: flex;
@@ -22,9 +28,32 @@
             align-items: center;
             margin-bottom: 18px;
         }
+        .btn-group-crud {
+            overflow: hidden;
+            border-radius: 2rem;
+            box-shadow: 0 0.15rem 0.45rem rgba(0,0,0,0.08);
+            display: inline-flex;
+        }
+        .btn-group-crud .btn {
+            border-radius: 0 !important;
+        }
+        .btn-group-crud .btn:first-child {
+            border-top-left-radius: 2rem !important;
+            border-bottom-left-radius: 2rem !important;
+        }
+        .btn-group-crud .btn:last-child {
+            border-top-right-radius: 2rem !important;
+            border-bottom-right-radius: 2rem !important;
+        }
+        .btn-atras {
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            border-radius: 2rem !important;
+            font-weight: 500;
+        }
     </style>
 </head>
-<body>
+<body class="bg-light">
 <div class="container my-5">
     <h2 class="text-primary fw-bold mb-4 text-center">Gestión de Usuarios</h2>
     
@@ -32,13 +61,13 @@
     <div class="crud-toolbar">
         <!-- Botón Atrás a la izquierda -->
         <div>
-            <a href="index.jsp" class="btn btn-dark">
+            <a href="index.jsp" class="btn btn-dark btn-atras shadow-sm">
                 <i class="bi bi-arrow-left"></i> Atrás
             </a>
         </div>
         <!-- Botones CRUD a la derecha -->
-        <div class="btn-group btn-group-crud" role="group" aria-label="CRUD buttons">
-            <a href="Usuario?action=new" class="btn btn-success">
+        <div class="btn-group btn-group-crud shadow-sm" role="group" aria-label="CRUD buttons">
+            <a href="usuario?action=new" class="btn btn-success btn-crud">
                 <i class="bi bi-person-plus"></i> Agregar
             </a>
             <button id="btnEditar" class="btn btn-primary btn-crud" disabled>
@@ -50,9 +79,9 @@
         </div>
     </div>
     
-    <div class="table-responsive">
-        <table class="table table-bordered align-middle" id="tablaUsuarios">
-            <thead>
+    <div class="table-responsive rounded-4 shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0" id="tablaUsuarios">
+            <thead class="table-dark text-center">
             <tr>
                 <th style="width: 40px; text-align: center;">
                     <!-- Solo radio -->
@@ -75,11 +104,11 @@
                     <td style="text-align: center;">
                         <input type="radio" name="selectedUsuario" class="checkUsuario" value="<%= usuario.getIdUsuario() %>">
                     </td>
-                    <td><%= usuario.getIdUsuario() %></td>
+                    <td class="text-center"><%= usuario.getIdUsuario() %></td>
                     <td><%= usuario.getUsername() %></td>
                     <td><%= usuario.getNombre() %></td>
                     <td><%= usuario.getApellido() != null ? usuario.getApellido() : "" %></td>
-                    <td><%= usuario.getRol() != null ? usuario.getRol() : "" %></td>
+                    <td class="text-center"><%= usuario.getRol() != null ? usuario.getRol() : "" %></td>
                     <td><%= usuario.getDni() != null ? usuario.getDni() : "" %></td>
                 </tr>
             <%
@@ -132,7 +161,7 @@
         const selected = tablaUsuarios.querySelector('.checkUsuario:checked');
         if (selected) {
             const id = selected.value;
-            window.location.href = 'Usuario?action=edit&id=' + id;
+            window.location.href = 'usuario?action=edit&id=' + id;
         }
     });
 
@@ -141,7 +170,7 @@
         const selected = tablaUsuarios.querySelector('.checkUsuario:checked');
         if (selected) {
             const id = selected.value;
-            window.location.href = 'Usuario?action=delete&id=' + id;
+            window.location.href = 'usuario?action=delete&id=' + id;
         }
     });
 

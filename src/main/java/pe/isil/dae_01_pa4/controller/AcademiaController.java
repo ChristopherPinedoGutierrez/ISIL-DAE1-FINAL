@@ -42,10 +42,34 @@ public class AcademiaController extends HttpServlet {
 
         if (action == null || action.equals("listar")) {
             ArrayList<Academia> lista = bl_academia.getAll();
-            request.setAttribute("listaAcademias", lista);
+            request.setAttribute("academias", lista);
             request.getRequestDispatcher("pages/academias.jsp").forward(request, response);
+        } else if ("new".equals(action)) {
+            // Mostrar formulario para agregar academia
+            request.setAttribute("modo", "new");
+            request.getRequestDispatcher("pages/academia_form.jsp").forward(request, response);
+        } else if ("edit".equals(action)) {
+            // Mostrar formulario para editar academia
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Academia academia = bl_academia.getById(id);
+                    if (academia != null) {
+                        request.setAttribute("academia", academia);
+                        request.setAttribute("modo", "edit");
+                        request.getRequestDispatcher("pages/academia_form.jsp").forward(request, response);
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    // id inválido, ignorar
+                }
+            }
+            // Si no hay id o no se encuentra, volver a listar
+            response.sendRedirect("academia?action=listar");
         } else {
-            response.sendRedirect("index.jsp");
+            // Acción no reconocida, volver a listar
+            response.sendRedirect("academia?action=listar");
         }
         
     }
@@ -56,7 +80,7 @@ public class AcademiaController extends HttpServlet {
         
         String action = request.getParameter("action");
 
-        if ("registrar".equals(action)) {
+        if ("new".equals(action)) {
             String nombre = request.getParameter("nombre");
             String ruc = request.getParameter("ruc");
 
@@ -74,20 +98,67 @@ public class AcademiaController extends HttpServlet {
                     request.setAttribute("mensaje", "Error al registrar la academia.");
                 }
             }
-
+            // Volver a la lista principal
             ArrayList<Academia> lista = bl_academia.getAll();
-            request.setAttribute("listaAcademias", lista);
+            request.setAttribute("academias", lista);
+            request.getRequestDispatcher("pages/academias.jsp").forward(request, response);
+
+        } else if ("edit".equals(action)) {
+            String idStr = request.getParameter("id");
+            String nombre = request.getParameter("nombre");
+            String ruc = request.getParameter("ruc");
+            boolean actualizado = false;
+            if (idStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Academia academia = new Academia();
+                    academia.setIdLiga(id);
+                    academia.setNombre(nombre);
+                    academia.setRuc(ruc);
+
+                    actualizado = bl_academia.update(academia);
+                } catch (NumberFormatException e) {
+                    actualizado = false;
+                }
+            }
+            if (actualizado) {
+                request.setAttribute("mensaje", "Academia actualizada correctamente.");
+            } else {
+                request.setAttribute("mensaje", "Error al actualizar la academia.");
+            }
+            ArrayList<Academia> lista = bl_academia.getAll();
+            request.setAttribute("academias", lista);
+            request.getRequestDispatcher("pages/academias.jsp").forward(request, response);
+
+        } else if ("delete".equals(action)) {
+            String idStr = request.getParameter("id");
+            boolean eliminado = false;
+            if (idStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    eliminado = bl_academia.delete(id);
+                } catch (NumberFormatException e) {
+                    eliminado = false;
+                }
+            }
+            if (eliminado) {
+                request.setAttribute("mensaje", "Academia eliminada correctamente.");
+            } else {
+                request.setAttribute("mensaje", "Error al eliminar la academia.");
+            }
+            ArrayList<Academia> lista = bl_academia.getAll();
+            request.setAttribute("academias", lista);
             request.getRequestDispatcher("pages/academias.jsp").forward(request, response);
 
         } else {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("academia?action=listar");
         }
         
     }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Controlador para CRUD de academias";
     }// </editor-fold>
 
 }

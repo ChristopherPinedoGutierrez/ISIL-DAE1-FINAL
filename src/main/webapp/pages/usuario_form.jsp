@@ -31,7 +31,7 @@
                 </div>
             <% } %>
 
-            <form method="post" action="Usuario?action=save">
+            <form method="post" action="usuario?action=save">
                 <% if (isEdit) { %>
                     <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario() %>" />
                 <% } %>
@@ -67,7 +67,7 @@
                 </div>
                 <% } %>
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="Usuario?action=list" class="btn btn-secondary">
+                    <a href="usuario?action=list" class="btn btn-secondary">
                         Cancelar
                     </a>
                     <button type="submit" class="btn btn-success">
